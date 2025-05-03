@@ -11,6 +11,7 @@ public class TripsServicePrimary(IConfiguration config) : ITripsService
     {
         var result = new List<TripGetDTO>();
         await using var connection = new SqlConnection(_connectionString);
+        // sql zwróci wzbogacony o informacje z 3 tabel zgodnie z poleceniem.
         const string sql = """
                            select t.idtrip, t.name, t.Description, t.DateFrom, t.dateto, t.MaxPeople, c.Name as CountryName
                            from trip t

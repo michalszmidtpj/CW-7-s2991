@@ -1,10 +1,7 @@
 using CW_7_s2991.Models.DTOs;
 using CW_7_s2991.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using CW_7_s2991.Exceptions;
-
 
 namespace CW_7_s2991.Controllers;
 
@@ -12,6 +9,7 @@ namespace CW_7_s2991.Controllers;
 [Route("/api/[controller]")]
 public class ClientsController(IClientsService clientsService) : ControllerBase
 {
+    // pobiera wycieczki dla  klienta o zadanym id 
     [HttpGet("{id}/trips")]
     public async Task<IActionResult> GetClientTripsAsync([FromRoute] int id)
     {
@@ -21,20 +19,39 @@ public class ClientsController(IClientsService clientsService) : ControllerBase
         return NotFound("No trips found or no such client");
     }
 
-    // [HttpPost()]
-    // public async Task<IActionResult> CreateNewClientAsync([FromBody] ClientCreateDTO body
-    // )
-    // {
-    //     Ok(clientsService.PostCreateClientAsync());
-    // }
-    //
-    // [HttpPut()]
-    // public async Task<IActionResult> RegisterClientsTripAsync()
-    // {
-    //     Ok(clientsService.PutRegisterClientsTripAsync());
-    // }
-    //
+    // dodaje kliena do bazy
+    [HttpPost("/api/[controller]")]
+    public async Task<IActionResult> CreateNewClientAsync([FromBody] ClientCreateDTO bodyclient)
+    {
+        var id = -1;
+        try
+        {
+            id = await clientsService.PostCreateClientAsync(bodyclient);
+        }
+        catch (IllegalParamException e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Ok(id);
+    }
     
+    // rejestruje klienta na wycieczke
+    [HttpPut("{id}/trips/{tripid}")]
+    public async Task<IActionResult> RegisterClientsTripAsync([FromRoute] int id, [FromRoute] int tripid)
+    {
+        try
+        {
+            await clientsService.PutRegisterClientsTripAsync(id, tripid);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Ok();
+    }
+    
+    
+    // usuwa klienta z wycieczki
     [HttpDelete("{id}/trips/{tripid}")]
     public async Task<IActionResult> RemoveClientsTripAsync([FromRoute] int id, [FromRoute] int tripid)
     {
