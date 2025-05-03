@@ -1,5 +1,4 @@
 using CW_7_s2991.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CW_7_s2991.Controllers;
@@ -9,6 +8,7 @@ namespace CW_7_s2991.Controllers;
 public class TripsController(ITripsService tripsService): ControllerBase
 {
     [HttpGet]
+    // zwraca wszystkie wycieczki
     public async Task<IActionResult> GetTripsAsync()
     {
         return Ok(await tripsService.GetTripsAsync());
