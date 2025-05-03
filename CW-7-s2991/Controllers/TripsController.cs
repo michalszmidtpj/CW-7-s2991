@@ -6,7 +6,7 @@ namespace CW_7_s2991.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TripController(ITripsService tripsService): ControllerBase
+public class TripsController(ITripsService tripsService): ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetTripsAsync()
