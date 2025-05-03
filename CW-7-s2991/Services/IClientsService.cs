@@ -8,6 +8,6 @@ public interface IClientsService
     public Task<IEnumerable<ClientTripGetDTO>> GetTripsAsync(int id);
     public Task<Client> PostCreateClientAsync(ClientCreateDTO client);
     public Task<ClientTrip> PutRegisterClientsTripAsync(int idClient, int idTrip);
-    public Task<ClientTrip> DeleteClientsTripAsync(int idClient, int idTrip);
+    public Task DeleteClientsTripAsync(int idClient, int idTrip);
     
 }

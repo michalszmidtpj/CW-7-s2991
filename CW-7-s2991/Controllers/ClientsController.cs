@@ -3,6 +3,7 @@ using CW_7_s2991.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using CW_7_s2991.Exceptions;
 
 
 namespace CW_7_s2991.Controllers;
@@ -33,9 +34,18 @@ public class ClientsController(IClientsService clientsService) : ControllerBase
     //     Ok(clientsService.PutRegisterClientsTripAsync());
     // }
     //
-    // [HttpDelete()]
-    // public async Task<IActionResult> RemoveClientsTripAsync()
-    // {
-    //     Ok(clientsService.DeleteClientsTripAsync());
-    // }
+    
+    [HttpDelete("{id}/trips/{tripid}")]
+    public async Task<IActionResult> RemoveClientsTripAsync([FromRoute] int id, [FromRoute] int tripid)
+    {
+        try
+        {
+            await clientsService.DeleteClientsTripAsync(id, tripid);
+        }
+        catch (NoSuchClientTripException e)
+        {
+            return NotFound(e.Message);
+        }
+        return Ok();
+    }
 }
